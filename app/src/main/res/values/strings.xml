@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Quick Notes</string>
-    <string name="title_activity_basic">BasicActivity</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="note.title.hint">Título…</string>
+    <string name="note.content.hint">Contenido…</string>
+    <string name="menu_save">Guardar</string>
+    <string name="note.title.required">Es obligatorio especificar al menos el título para la nota</string>
 </resources>
