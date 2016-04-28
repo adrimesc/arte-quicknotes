@@ -25,16 +25,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         }
     }
 
-    public interface Events {
-        void onNoteClicked(Note note);
-    }
-
     private List<Note> mNoteList;
-    private Events mEvents;
 
-    public NotesAdapter(List<Note> noteList, Events events) {
+    public NotesAdapter(List<Note> noteList) {
         mNoteList = noteList;
-        mEvents = events;
     }
 
     @Override
@@ -48,12 +42,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         final Note note = mNoteList.get(position);
         holder.tvTitle.setText(note.getTitle());
         holder.tvExcerpt.setText(note.getExcerpt());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEvents.onNoteClicked(note);
-            }
-        });
     }
 
     @Override

@@ -18,9 +18,7 @@ import com.arte.quicknotes.models.Note;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NotesAdapter.Events{
-
-    private NotesAdapter mAdapter;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,31 +37,17 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.Even
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, NoteActivity.class);
-                startActivityForResult(intent, 0);
+                startActivity(intent);
             }
         });
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_notes);
 
-        mAdapter = new NotesAdapter(MockNoteList.getNoteList(), this);
+        NotesAdapter mAdapter = new NotesAdapter(MockNoteList.getNoteList());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, Boolean.FALSE);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onNoteClicked(Note note) {
-        Intent intent = new Intent(this, NoteActivity.class);
-        Bundle arguments = new Bundle();
-        arguments.putSerializable(NoteActivity.PARAM_NOTE, note);
-        intent.putExtras(arguments);
-        startActivityForResult(intent, 0);
-    }
 }

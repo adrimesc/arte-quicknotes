@@ -1,7 +1,4 @@
 <resources>
     <string name="app_name">Quick Notes</string>
-    <string name="note.title.hint">Título…</string>
-    <string name="note.content.hint">Contenido…</string>
-    <string name="menu_save">Guardar</string>
-    <string name="note.title.required">Es obligatorio especificar al menos el título para la nota</string>
+    <string name="hello_world">Hola mundo</string>
 </resources>
