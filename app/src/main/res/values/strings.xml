@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Quick Notes</string>
     <string name="hello_world">Hola mundo</string>
+    <string name="note_title">Title</string>
+    <string name="note_content">Content</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_delete">Delete</string>
 </resources>

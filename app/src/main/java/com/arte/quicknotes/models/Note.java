@@ -2,20 +2,16 @@ package com.arte.quicknotes.models;
 
 import java.io.Serializable;
 
-public class Note implements Serializable{
-
-    private static final int NOTE_EXCERPT_LENGTH = 100;
+/**
+ * Created by arte on 27/04/2016.
+ */
+public class Note implements Serializable {
     private String title;
     private String content;
+    private int id;
 
-    public Note() {}
+    public Note() {
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
@@ -26,17 +22,28 @@ public class Note implements Serializable{
         this.content = content;
     }
 
-    public String getExcerpt() {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getExcept() {
         if (content == null) {
             return "";
         }
-
-        if (content.length() < NOTE_EXCERPT_LENGTH) {
+        if (content.length() < 100) {
             return content;
         }
-
-        return content.substring(0, NOTE_EXCERPT_LENGTH);
+        return content.substring(0,100);
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

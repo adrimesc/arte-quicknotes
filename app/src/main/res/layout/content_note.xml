@@ -10,8 +10,16 @@
     tools:context=".activities.NoteActivity"
     tools:showIn="@layout/activity_note">
 
-    <TextView
+    <EditText
+        android:id="@+id/et_title"
+        android:hint="@string/note_title"
+        android:inputType="text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world"/>
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/et_content"
+        android:hint="@string/note_content"
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
