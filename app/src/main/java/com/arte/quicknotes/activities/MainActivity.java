@@ -2,6 +2,7 @@ package com.arte.quicknotes.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,17 +11,26 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.arte.quicknotes.models.MockNoteList;
 import com.arte.quicknotes.R;
 import com.arte.quicknotes.adapters.NotesAdapter;
+import com.arte.quicknotes.database.NotesDataSource;
+import com.arte.quicknotes.database.SQLHelper;
 import com.arte.quicknotes.models.Note;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NotesAdapter.Events {
     private NotesAdapter mAdapter;
+    private SQLHelper sqlManager;
+    private NotesDataSource notesDbm = new NotesDataSource(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sqlManager = new SQLHelper(this);
+        sqlManager.getReadableDatabase();
         setupActivity();
     }
 
@@ -41,9 +51,32 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.Even
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_notes);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, Boolean.FALSE);
 
-        mAdapter = new NotesAdapter(MockNoteList.getList(), this);
+        notesDbm.open();
+        Cursor cursor = notesDbm.getAllNotes();
+
+        List<Note> notes = new ArrayList<>();
+        Note note;
+        if (cursor.moveToFirst()) {
+            do {
+                note = new Note();
+                note.setId(Integer.parseInt(cursor.getString(0)));
+                note.setTitle(cursor.getString(1));
+                note.setContent(cursor.getString(2));
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        notesDbm.close();
+        mAdapter = new NotesAdapter(notes, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
+    }
+
+    protected void onResume() {
+        super.onResume();
+        sqlManager = new SQLHelper(this);
+        sqlManager.getReadableDatabase();
+        setupActivity();
     }
 
     @Override

@@ -7,14 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.arte.quicknotes.models.MockNoteList;
 import com.arte.quicknotes.R;
+import com.arte.quicknotes.database.NotesDataSource;
+import com.arte.quicknotes.database.SQLHelper;
 import com.arte.quicknotes.models.Note;
-
-import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
 
+    private SQLHelper sqlManager;
+    private NotesDataSource notesDbm = new NotesDataSource(this);
     private EditText mTitle;
     private EditText mContent;
     private Note mNote;
@@ -24,6 +25,8 @@ public class NoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
+        sqlManager = new SQLHelper(this);
+        sqlManager.getWritableDatabase();
         setupActivity();
         loadNote();
     }
@@ -70,20 +73,27 @@ public class NoteActivity extends AppCompatActivity {
             String content = mContent.getText().toString();
             note.setTitle(title);
             note.setContent(content);
-            MockNoteList.addNote(note);
+
+            notesDbm.open();
+            notesDbm.createNote(note.getTitle(), note.getContent());
+            notesDbm.close();
         } else {
             String title = mTitle.getText().toString();
             String content = mContent.getText().toString();
             mNote.setTitle(title);
             mNote.setContent(content);
-            MockNoteList.updateNote(mNote);
+            notesDbm.open();
+            notesDbm.updateNote(mNote.getId(),mNote.getTitle(),mNote.getContent());
+            notesDbm.close();
         }
         finish();
     }
 
     private void deleteNote() {
         if (mNote != null) {
-            MockNoteList.deleteNote(mNote);
+            notesDbm.open();
+            notesDbm.deleteNote(mNote);
+            notesDbm.close();
         }
         finish();
     }
